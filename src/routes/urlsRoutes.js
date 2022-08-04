@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { shortenController } from "../controllers/urlsControllers.js";
-import { shortenMiddleware } from "../middlewares/shortenMiddlewares.js";
+import { shortenMiddleware } from "../middlewares/shortenMiddleware.js";
 
 const router = Router();
 
