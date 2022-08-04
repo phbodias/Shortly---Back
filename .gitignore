@@ -1,5 +1,5 @@
 /node_modules
 .env
-/src/controllers
-/src/middlewares
-/src/schemas
+/src/controllers/urlsControllers.js
+/src/middlewares/shortenMiddleware.js
+
