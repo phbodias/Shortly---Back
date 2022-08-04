@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { deleteShortUrlController, getShortenUrlController, redirectToUrlController, shortenController } from "../controllers/urlsControllers.js";
-import { deleteShortUrlMiddleware, getShortenUrlMiddleware, redirectToUrlMiddleware, shortenMiddleware } from "../middlewares/shortenMiddleware.js";
+import { deleteShortUrlMiddleware, getShortenUrlMiddleware, redirectToUrlMiddleware, shortenMiddleware } from "../middlewares/urlsMiddleware.js";
 
 const router = Router();
 

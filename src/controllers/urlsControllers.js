@@ -65,6 +65,5 @@ export async function deleteShortUrlController(req, res) {
     `DELETE FROM urls WHERE id=$1`, [urlId]
   )
 
-  console.log(url[0]);
   return res.sendStatus(204);
 }
