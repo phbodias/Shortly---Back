@@ -46,7 +46,7 @@ export async function deleteShortUrlMiddleware(req, res, next) {
 
     if (url.length === 0) return res.sendStatus(404);
 
-    if (url.userId !== userId) return res.sendStatus(401);
+    if (url[0].userId !== userId) return res.sendStatus(401);
 
     next();
   } catch (e) {
