@@ -14,7 +14,6 @@ export async function getRanking(req, res) {
 
     res.status(200).send(response);
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }

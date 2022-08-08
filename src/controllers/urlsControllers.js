@@ -15,7 +15,6 @@ export async function shortenController(req, res) {
 
     res.status(201).send({ shortUrl });
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }
@@ -35,7 +34,6 @@ export async function getShortenUrlController(req, res) {
 
     return res.status(200).send({ id, shortUrl, url });
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }
@@ -55,7 +53,6 @@ export async function redirectToUrlController(req, res) {
 
     return res.redirect(200, shortUrl);
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }
@@ -68,7 +65,6 @@ export async function deleteShortUrlController(req, res) {
 
     return res.sendStatus(204);
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }

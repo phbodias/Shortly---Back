@@ -30,7 +30,6 @@ export async function getUserController(req, res) {
 
     return res.status(200).send(response);
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }

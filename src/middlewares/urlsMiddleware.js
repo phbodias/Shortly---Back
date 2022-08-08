@@ -30,7 +30,6 @@ export async function redirectToUrlMiddleware(req, res, next) {
 
     next();
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }
@@ -51,7 +50,6 @@ export async function deleteShortUrlMiddleware(req, res, next) {
 
     next();
   } catch (e) {
-    console.log(e);
     return res.status(500).send(e);
   }
 }
