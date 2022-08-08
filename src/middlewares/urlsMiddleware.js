@@ -50,6 +50,6 @@ export async function deleteShortUrlMiddleware(req, res, next) {
 
     next();
   } catch (e) {
-    return res.status(500).send("erro no middleware");
+    return res.status(500).send(e.message);
   }
 }
