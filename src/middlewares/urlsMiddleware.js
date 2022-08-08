@@ -1,22 +1,10 @@
-import jwt from "jsonwebtoken";
 import connection from "../databases/postgres.js";
 import { shortenSchema } from "../schemas/shortenSchema.js";
 
 export function shortenMiddleware(req, res, next) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace("Bearer ", "");
-  let userId = null;
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.status(401).send("Token inválido");
-    userId = decoded.id;
-  });
-
   const url = req.body;
   const { error } = shortenSchema.validate(url);
   if (error) return res.status(422).send(error.message);
-
-  res.locals.userId = userId;
 
   next();
 }
@@ -29,39 +17,41 @@ export function getShortenUrlMiddleware(req, res, next) {
 }
 
 export async function redirectToUrlMiddleware(req, res, next) {
-  const shortUrl = req.params.shortUrl;
+  try {
+    const shortUrl = req.params.shortUrl;
 
-  const { rows: url } = await connection.query(
-    `
+    const { rows: url } = await connection.query(
+      `
     SELECT * FROM urls WHERE "shortUrl"=$1`,
-    [shortUrl]
-  );
+      [shortUrl]
+    );
 
-  if (url.length === 0) return res.sendStatus(404);
+    if (url.length === 0) return res.sendStatus(404);
 
-  next();
+    next();
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send(e);
+  }
 }
 
 export async function deleteShortUrlMiddleware(req, res, next) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace("Bearer ", "");
-  let userId = null;
+  try {
+    const urlId = req.params.id;
+    const userId = req.locals.id;
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.status(401).send("Token inválido");
-    userId = decoded.id;
-  });
+    const { rows: url } = await connection.query(
+      `SELECT * FROM urls WHERE id=$1`,
+      [urlId]
+    );
 
-  const urlId = req.params.id;
+    if (url.length === 0) return res.sendStatus(404);
 
-  const { rows: url } = await connection.query(
-    `SELECT * FROM urls WHERE id=$1`,
-    [urlId]
-  );
+    if (url[0].userId !== userId) return res.sendStatus(401);
 
-  if (url.length === 0) return res.sendStatus(404);
-
-  if (url[0].userId !== userId) return res.sendStatus(401);
-
-  next();
+    next();
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send(e);
+  }
 }

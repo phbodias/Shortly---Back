@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid";
 import connection from "../databases/postgres.js";
-import jwt from "jsonwebtoken";
 
 export async function shortenController(req, res) {
   try {
@@ -16,7 +15,8 @@ export async function shortenController(req, res) {
 
     res.status(201).send({ shortUrl });
   } catch (e) {
-    return res.sendStatus(500);
+    console.log(e);
+    return res.status(500).send(e);
   }
 }
 
@@ -35,7 +35,8 @@ export async function getShortenUrlController(req, res) {
 
     return res.status(200).send({ id, shortUrl, url });
   } catch (e) {
-    return res.sendStatus(500);
+    console.log(e);
+    return res.status(500).send(e);
   }
 }
 
@@ -46,7 +47,7 @@ export async function redirectToUrlController(req, res) {
     await connection.query(
       `
         UPDATE urls
-        SET views = views+1
+        SET "visitCount" = "visitCount"+1
         WHERE "shortUrl" = $1
       `,
       [shortUrl]
@@ -54,16 +55,20 @@ export async function redirectToUrlController(req, res) {
 
     return res.redirect(200, shortUrl);
   } catch (e) {
-    return res.sendStatus(500);
+    console.log(e);
+    return res.status(500).send(e);
   }
 }
 
 export async function deleteShortUrlController(req, res) {
-  const urlId = req.params.id;
+  try {
+    const urlId = req.params.id;
 
-  await connection.query(
-    `DELETE FROM urls WHERE id=$1`, [urlId]
-  )
+    await connection.query(`DELETE FROM urls WHERE id=$1`, [urlId]);
 
-  return res.sendStatus(204);
+    return res.sendStatus(204);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send(e);
+  }
 }
