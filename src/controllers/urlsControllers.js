@@ -65,6 +65,6 @@ export async function deleteShortUrlController(req, res) {
 
     return res.sendStatus(204);
   } catch (e) {
-    return res.status(500).send(e);
+    return res.status(500).send("erro no controller");
   }
 }
