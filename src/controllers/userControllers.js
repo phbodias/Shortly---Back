@@ -21,6 +21,8 @@ export async function getUserController(req, res) {
       [userId]
     );
 
+    if (urlsResponse.length === 0) urlsResponse = [];
+
     const response = {
       id: userId,
       name: userResponse[0].name,
