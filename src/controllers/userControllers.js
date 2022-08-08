@@ -15,14 +15,7 @@ export async function getUserController(req, res) {
       [userId]
     );
 
-    const { rows: urlsResponse } = await connection.query(
-      `SELECT id, "shortUrl", url, "visitCount"
-        FROM urls
-        WHERE "userId" = $1`,
-      [userId]
-    );
-
-    if (urlsResponse.length === 0) {
+    if (userResponse.length === 0) {
       const user = await connection.query(
         `SELECT id, name
         FROM users
@@ -35,14 +28,23 @@ export async function getUserController(req, res) {
         visitCount: 0,
         shortenedUrls: [],
       };
-    } else {
-      response = {
-        id: userId,
-        name: userResponse[0].name,
-        visitCount: userResponse[0].visitCount,
-        shortenedUrls: urlsResponse,
-      };
+
+      return res.status(200).send(response);
     }
+
+    const { rows: urlsResponse } = await connection.query(
+      `SELECT id, "shortUrl", url, "visitCount"
+        FROM urls
+        WHERE "userId" = $1`,
+      [userId]
+    );
+    
+    response = {
+      id: userId,
+      name: userResponse[0].name,
+      visitCount: userResponse[0].visitCount,
+      shortenedUrls: urlsResponse,
+    };
 
     return res.status(200).send(response);
   } catch (e) {
