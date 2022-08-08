@@ -18,7 +18,7 @@ export async function registerMiddleware(req, res, next) {
       return res.status(409).send("Este email já foi cadastrado!");
     }
   } catch (e) {
-    return res.status(500).send(e);
+    return res.status(500).send(e.message);
   }
 
   next();
@@ -45,6 +45,6 @@ export async function loginMiddleware(req, res, next) {
     next();
 
   } catch (e) {
-    return res.status(500).send(e);
+    return res.status(500).send(e.message);
   }
 }

@@ -16,7 +16,7 @@ export async function registerController(req, res) {
 
     res.status(201).send("Usuário criado com sucesso!");
   } catch (e) {
-    return res.status(500).send(e);
+    return res.status(500).send(e.message);
   }
 }
 
@@ -34,6 +34,6 @@ export async function loginController(req, res) {
       return res.status(401).send("Senha ou email incorretos!");
     }
   } catch (e) {
-    return res.status(500).send(e);
+    return res.status(500).send(e.message);
   }
 }

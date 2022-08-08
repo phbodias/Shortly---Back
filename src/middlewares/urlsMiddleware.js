@@ -30,14 +30,14 @@ export async function redirectToUrlMiddleware(req, res, next) {
 
     next();
   } catch (e) {
-    return res.status(500).send(e);
+    return res.status(500).send(e.message);
   }
 }
 
 export async function deleteShortUrlMiddleware(req, res, next) {
   try {
     const urlId = req.params.id;
-    const usuarioId = res.locals.userId;
+    const userId = res.locals.userId;
 
     const { rows: urlToDelete } = await connection.query(
       `SELECT * FROM urls WHERE id=$1`,
@@ -46,7 +46,7 @@ export async function deleteShortUrlMiddleware(req, res, next) {
 
     if (urlToDelete.length === 0) return res.sendStatus(404);
 
-    if (urlToDelete[0].userId !== usuarioId) return res.sendStatus(401);
+    if (urlToDelete[0].userId !== userId) return res.sendStatus(401);
 
     next();
   } catch (e) {
