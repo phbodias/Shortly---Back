@@ -17,7 +17,7 @@ export async function getUserController(req, res) {
 
     if (userResponse.length === 0) {
       const user = await connection.query(
-        `SELECT id, name
+        `SELECT users.id AS id, users.name AS name
         FROM users
         WHERE id=$1`,
         [userId]
