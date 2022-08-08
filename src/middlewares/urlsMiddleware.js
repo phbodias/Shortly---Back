@@ -12,7 +12,7 @@ export function shortenMiddleware(req, res, next) {
 export function getShortenUrlMiddleware(req, res, next) {
   const urlid = req.params.id;
   if (!parseInt(urlid) || urlid % 1 !== 0)
-    return res.status(422).send("Envie um parâmetro do tipo inteiro.");
+    return res.status(422).send("Envie um parâmetro do tipo inteiro!");
   next();
 }
 
