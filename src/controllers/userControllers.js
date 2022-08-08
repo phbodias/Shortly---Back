@@ -3,6 +3,7 @@ import connection from "../databases/postgres.js";
 export async function getUserController(req, res) {
   try {
     const userId = res.locals.userId;
+    let urlsResponse = [];
 
     const { rows: userResponse } = await connection.query(
       `SELECT users.id, users.name, SUM(urls."visitCount") AS "visitCount"
@@ -14,14 +15,14 @@ export async function getUserController(req, res) {
       [userId]
     );
 
-    const { rows: urlsResponse } = await connection.query(
+    const { rows: urls } = await connection.query(
       `SELECT id, "shortUrl", url, "visitCount"
         FROM urls
         WHERE "userId" = $1`,
       [userId]
     );
 
-    if (urlsResponse.length === 0) urlsResponse = [];
+    if (urlsResponse.length !== 0) urlsResponse = urls;
 
     const response = {
       id: userId,
