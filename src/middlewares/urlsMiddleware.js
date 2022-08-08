@@ -39,14 +39,14 @@ export async function deleteShortUrlMiddleware(req, res, next) {
     const urlId = req.params.id;
     const userId = req.locals.id;
 
-    const { rows: url } = await connection.query(
+    const { rows: urlToDelete } = await connection.query(
       `SELECT * FROM urls WHERE id=$1`,
       [urlId]
     );
 
-    if (url.length === 0) return res.sendStatus(404);
+    if (urlToDelete.length === 0) return res.sendStatus(404);
 
-    if (url[0].userId !== userId) return res.sendStatus(401);
+    if (urlToDelete[0].userId !== userId) return res.sendStatus(401);
 
     next();
   } catch (e) {
