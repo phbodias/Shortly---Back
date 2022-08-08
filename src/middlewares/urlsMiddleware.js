@@ -36,8 +36,8 @@ export async function redirectToUrlMiddleware(req, res, next) {
 
 export async function deleteShortUrlMiddleware(req, res, next) {
   try {
-    const urlId = req.params.userId;
-    const userId = req.locals.id;
+    const urlId = req.params.id;
+    const userId = req.locals.userId;
 
     const { rows: urlToDelete } = await connection.query(
       `SELECT * FROM urls WHERE id=$1`,
