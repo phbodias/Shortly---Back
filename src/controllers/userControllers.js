@@ -22,14 +22,8 @@ export async function getUserController(req, res) {
         WHERE id=$1`,
         [userId]
       );
-      response = {
-        id: userId,
-        name: user[0].name,
-        visitCount: 0,
-        shortenedUrls: [],
-      };
 
-      return res.status(200).send(response);
+      return res.status(200).send(user);
     }
 
     const { rows: urlsResponse } = await connection.query(
